@@ -81,6 +81,17 @@ pipeline{
                 }
             }
         }
+        
+        stage('Connect to EKS') {
+            steps {
+                sh """
+                aws eks update-kubeconfig \
+                --region ${AWS_REGION} \
+                --name ${CLUSTER_NAME}
+                """
+            }
+        }
+
         stage('verify'){
             steps{
                 withKubeConfig(caCertificate: '', clusterName: 'itkannadigaru-cluster', contextName: '', credentialsId: 'kube', namespace: 'microdegree', restrictKubeConfigAccess: false, serverUrl: 'https://5C8AAAF39774CCEADBBFDBA167D06AE3.sk1.us-west-2.eks.amazonaws.com'){
